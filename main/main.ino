@@ -124,6 +124,7 @@ void loop() {
   loopBlink(current_time, 0.5f); // Indicate we are in main loop with a blink every x seconds
 
 
+
 //=============================================GET IMU DATA AND APPLY FILTERS=============================================//
 
   float raw_gyro[AXIS_COUNT];
@@ -182,7 +183,7 @@ void loop() {
   rc_channels[RC_PITCH] = rc_rpy[1];
   rc_channels[RC_YAW] = rc_rpy[2];
   */
-
+  bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
   // will only filter the first 4 channels and not switch channels
   rcFiltersApply(&rcFilters, rc_channels);
 
@@ -192,7 +193,7 @@ void loop() {
   float setpoints_rpy[AXIS_COUNT]; // these are the desired attitudes or rotation
 
   // TODO add extra modes for fixedwing flight modes with different setpoints
-  if (rc_channels[RC_AUX1] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
+  if (rc_channels[RC_FLIGHT_CONFIG] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
     // These setpoints are in deg, in other words what attitude you want to be at, except for yaw which is in deg/s
     // keep the max attitude below about 60
 
@@ -228,7 +229,7 @@ void loop() {
 
     // put your fixed wing into attitude mode and slowly turn it to the right while failsafed
     // really only works for fixed wing aircraft
-    rc_channels[RC_AUX1] = 1.0f; // set the aircraft to attitude mode
+    rc_channels[RC_FLIGHT_CONFIG] = 1.0f; // set the aircraft to attitude mode
     setpoints_rpy[AXIS_ROLL] = 25.0; // tilt right slightly to help turn
     setpoints_rpy[AXIS_PITCH] = 5.0; // pitch down to help keep some airspeed and prevent stalling
 
@@ -272,7 +273,7 @@ void loop() {
   );
 */
   float pidSums[AXIS_COUNT] = {0.0f, 0.0f, 0.0f}; // will be used in the mixer
-  if (rc_channels[RC_AUX1] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
+  if (rc_channels[RC_FLIGHT_CONFIG] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
 
     // will modify setpoints_rpy to be used as the setpoint input to ratePidApply
     attitudePidApply(
