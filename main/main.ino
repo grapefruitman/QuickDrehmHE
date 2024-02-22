@@ -152,6 +152,7 @@ void loop() {
     attitude_euler, gravity_vector // Will be updated with attitude data
   );
 
+
 //=============================================GET RC DATA AND APPLY FILTERS===============================================//
 
   // Get rc commands
@@ -183,7 +184,6 @@ void loop() {
   rc_channels[RC_PITCH] = rc_rpy[1];
   rc_channels[RC_YAW] = rc_rpy[2];
   */
-  bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
   // will only filter the first 4 channels and not switch channels
   rcFiltersApply(&rcFilters, rc_channels);
 
@@ -360,6 +360,12 @@ void loop() {
 
   // Regulate loop rate
   maxLoopRate(LOOPRATE); // Will not exceed LOOPRATE
+
+  bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
+  if (should_print) {
+    printDebug("rc roll", rc_channels[RC_ROLL]);
+    printNewLine();
+  }
 }
 
 
@@ -390,10 +396,11 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
   
   // TODO mix inputs to servo commands
   // servos need to be scaled to work properly with the servo scaling that was set earlier
-  servo_commands[SERVO_0] = 0.0f;
-  servo_commands[SERVO_1] = 0.0f;
-  servo_commands[SERVO_2] = 0.0f;
-  servo_commands[SERVO_3] = 0.0f;
+  servo_commands[SERVO_RIGHT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
+  servo_commands[SERVO_LEFT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
+  //servo_commands[SERVO_LEFT_AILERON] = 1 * 90.0f;
+  //servo_commands[SERVO_2] = 0.0f;
+  //servo_commands[SERVO_3] = 0.0f;
   servo_commands[SERVO_4] = 0.0f;
   servo_commands[SERVO_5] = 0.0f;
   servo_commands[SERVO_6] = 0.0f;
