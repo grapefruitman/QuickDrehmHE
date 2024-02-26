@@ -363,6 +363,7 @@ void loop() {
 
   bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
   if (should_print) {
+    printDebug("rc pitch", rc_channels[RC_PITCH]);
     printDebug("rc roll", rc_channels[RC_ROLL]);
     printNewLine();
   }
@@ -397,7 +398,12 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
   // TODO mix inputs to servo commands
   // servos need to be scaled to work properly with the servo scaling that was set earlier
   servo_commands[SERVO_RIGHT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
+  servo_commands[SERVO_LEFT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
+  //servo_commands[SERVO_RIGHT_ELEVATOR] = 1 * -90.0f;
+  //servo_commands[SERVO_LEFT_ELEVATOR] = 0 * 90.0f;
   servo_commands[SERVO_LEFT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
+  servo_commands[SERVO_RIGHT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
+  //servo_commands[SERVO_RIGHT_AILERON] = 0 * 90.0f;
   //servo_commands[SERVO_LEFT_AILERON] = 1 * 90.0f;
   //servo_commands[SERVO_2] = 0.0f;
   //servo_commands[SERVO_3] = 0.0f;
