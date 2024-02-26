@@ -20,19 +20,19 @@ void initServoScales(boundedRangeScaler_t servoScales[]) {
 
   servoScalerInitHelper(
     servoScales[SERVO_RIGHT_AILERON], 
-    -90.0f, 20.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
+    20.0f, -90.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
     0.0f, 0.2f, 1.0f // Servo output min, mid, and max. Modify is servo isn't centering or moving to far. Only takes a range of 0.0-1.0
   );
 
   servoScalerInitHelper(
     servoScales[SERVO_RIGHT_ELEVATOR], 
-    -90.0f, 10.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
+    10.0f, -90.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
     0.0f, 0.2f, 1.0f // Servo output min, mid, and max. Modify is servo isn't centering or moving to far. Only takes a range of 0.0-1.0
   );
 
   servoScalerInitHelper(
     servoScales[SERVO_LEFT_ELEVATOR],
-    10.0f, -90.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
+    -90.0f, 10.0f, // Servo control surface angle min and max, use a higher then lower number to swap directions
     0.0f, 0.9f, 1.0f // Servo output min, mid, and max. Modify is servo isn't centering or moving to far. Only takes a range of 0.0-1.0
   );
   

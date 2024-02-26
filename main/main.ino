@@ -399,19 +399,19 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
   // servos need to be scaled to work properly with the servo scaling that was set earlier
   servo_commands[SERVO_RIGHT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
   servo_commands[SERVO_LEFT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
-  //servo_commands[SERVO_RIGHT_ELEVATOR] = 1 * -90.0f;
-  //servo_commands[SERVO_LEFT_ELEVATOR] = 0 * 90.0f;
+  // servo_commands[SERVO_RIGHT_ELEVATOR] = 1 * 90.0f;
+  // servo_commands[SERVO_LEFT_ELEVATOR] = 1 * 90.0f;
   servo_commands[SERVO_LEFT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
   servo_commands[SERVO_RIGHT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
-  //servo_commands[SERVO_RIGHT_AILERON] = 0 * 90.0f;
+  //servo_commands[SERVO_RIGHT_AILERON] = 1 * 90.0f;
   //servo_commands[SERVO_LEFT_AILERON] = 1 * 90.0f;
   //servo_commands[SERVO_2] = 0.0f;
-  //servo_commands[SERVO_3] = 0.0f;
-  servo_commands[SERVO_4] = 0.0f;
-  servo_commands[SERVO_5] = 0.0f;
-  servo_commands[SERVO_6] = 0.0f;
-  servo_commands[SERVO_7] = 0.0f;
-  servo_commands[SERVO_8] = 0.0f;
+  // servo_commands[SERVO_3] = 0.0f;
+  // servo_commands[SERVO_4] = 0.0f;
+  // servo_commands[SERVO_5] = 0.0f;
+  // servo_commands[SERVO_6] = 0.0f;
+  // servo_commands[SERVO_7] = 0.0f;
+  // servo_commands[SERVO_8] = 0.0f;
 }
 
 // DESCRIPTION: Arming occurs when arm switch is switched from low to high twice in the span of a second.
