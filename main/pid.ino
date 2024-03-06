@@ -220,7 +220,7 @@ void ratePidApply(ratePid_t *pid, float setpoint[], float gyro[], float pidSums[
     float dterm = pid->kd[axis] * derivative;
 
     // TODO calculate FFterm which is a scaler of the setpoint (Should be really only be used in fixed wing flight modes)
-    float ffterm = pid->kff[axis] * 0.0f;
+    float ffterm = pid->kff[axis] * setpoint[axis];
     
     // pidsum is the output of the PID controller, simply add all pid terms together
     pidSums[axis] = pterm + iterm + dterm + ffterm;
