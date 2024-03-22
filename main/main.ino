@@ -361,12 +361,7 @@ void loop() {
   // Regulate loop rate
   maxLoopRate(LOOPRATE); // Will not exceed LOOPRATE
 
-  bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
-  if (should_print) {
-    printDebug("rc throttle", rc_channels[RC_THROTTLE]);
-    printDebug(" rc arm", rc_channels[RC_ARM]);
-    printNewLine();
-  }
+
 }
 
 
@@ -387,6 +382,16 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
   // Positive roll = roll right
   // Positive pitch = pitch down
   // Positive yaw = yaw left
+  float pitch_command = pidSums[AXIS_PITCH];
+  float roll_command = pidSums[AXIS_ROLL];
+  float yaw_command = pidSums[AXIS_YAW];
+
+    bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
+  if (should_print) {
+    printDebug("pid yaw command", pidSums[AXIS_YAW]);
+    printDebug(" rc arm", rc_channels[RC_ARM]);
+    printNewLine();
+  }
 
   // TODO mix inputs to motor commands
   // motor commands should be between 0 and 1
@@ -394,19 +399,23 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
   // motor_commands[MOTOR_1] = 0.0f;
   // motor_commands[MOTOR_2] = 0.0f;
   // motor_commands[MOTOR_3] = 0.0f;
-  motor_commands[MOTOR_FL] = rc_channels[RC_THROTTLE];
-  motor_commands[MOTOR_FR] = rc_channels[RC_THROTTLE];
-  motor_commands[MOTOR_BL] = rc_channels[RC_THROTTLE];
-  motor_commands[MOTOR_BR] = rc_channels[RC_THROTTLE];
+  motor_commands[MOTOR_FL] = throttle - pitch_command + roll_command + yaw_command;
+  motor_commands[MOTOR_FR] = throttle - pitch_command - roll_command - yaw_command;
+  motor_commands[MOTOR_BL] = throttle + pitch_command + roll_command - yaw_command;
+  motor_commands[MOTOR_BR] = throttle + pitch_command - roll_command + yaw_command;
+  // motor_commands[MOTOR_FL] = rc_channels[RC_THROTTLE];
+  // motor_commands[MOTOR_FR] = rc_channels[RC_THROTTLE];
+  // motor_commands[MOTOR_BL] = rc_channels[RC_THROTTLE];
+  // motor_commands[MOTOR_BR] = rc_channels[RC_THROTTLE];
   
   // TODO mix inputs to servo commands
   // servos need to be scaled to work properly with the servo scaling that was set earlier
-  //servo_commands[SERVO_RIGHT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
-  //servo_commands[SERVO_LEFT_ELEVATOR] = rc_channels[RC_PITCH] * 90.0f;
+  servo_commands[SERVO_RIGHT_ELEVATOR] = yaw_command * 50 - 90.0f;
+  servo_commands[SERVO_LEFT_ELEVATOR] = -yaw_command * 50 - 90.0f;
   // servo_commands[SERVO_RIGHT_ELEVATOR] = 1 * 90.0f;
   // servo_commands[SERVO_LEFT_ELEVATOR] = 1 * 90.0f;
-  //servo_commands[SERVO_LEFT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
-  //servo_commands[SERVO_RIGHT_AILERON] = rc_channels[RC_ROLL] * 90.0f;
+  servo_commands[SERVO_LEFT_AILERON] = -yaw_command * 50 - 90.0f;
+  servo_commands[SERVO_RIGHT_AILERON] = yaw_command * 50 - 90.0f;
   //servo_commands[SERVO_RIGHT_AILERON] = 1 * 90.0f;
   //servo_commands[SERVO_LEFT_AILERON] = 1 * 90.0f;
   //servo_commands[SERVO_2] = 0.0f;
