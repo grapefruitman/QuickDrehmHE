@@ -193,7 +193,7 @@ void loop() {
   float setpoints_rpy[AXIS_COUNT]; // these are the desired attitudes or rotation
 
   // TODO add extra modes for fixedwing flight modes with different setpoints
-  if (rc_channels[RC_FLIGHT_CONFIG] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
+  if (rc_channels[RC_FLIGHT_MODE] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
     // These setpoints are in deg, in other words what attitude you want to be at, except for yaw which is in deg/s
     // keep the max attitude below about 60
 
@@ -273,7 +273,7 @@ void loop() {
   );
 */
   float pidSums[AXIS_COUNT] = {0.0f, 0.0f, 0.0f}; // will be used in the mixer
-  if (rc_channels[RC_FLIGHT_CONFIG] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
+  if (rc_channels[RC_FLIGHT_MODE] > 0.55) { // lets call aux1 attitude mode for now, you should rename it later
 
     // will modify setpoints_rpy to be used as the setpoint input to ratePidApply
     attitudePidApply(
@@ -389,7 +389,11 @@ void controlMixer(float rc_channels[], float pidSums[], float motor_commands[], 
     bool should_print = shouldPrint(current_time, 10.0f); // Print data at 10hz
   if (should_print) {
     printDebug("pid yaw command", pidSums[AXIS_YAW]);
+    printDebug("pid pitch command", pidSums[AXIS_PITCH]);
+    printDebug("pid roll command", pidSums[AXIS_ROLL]);
     printDebug(" rc arm", rc_channels[RC_ARM]);
+    printDebug("flight mode", rc_channels[RC_FLIGHT_MODE]);
+    
     printNewLine();
   }
 
